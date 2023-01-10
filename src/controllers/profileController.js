@@ -33,3 +33,31 @@ exports.userLogin= (req, res)=> {
         }
     })
     }
+exports.userProfile= (req, res)=> {
+    let UserName = req.headers['username'];
+    
+    
+    profileModel.find({ UserName: UserName }, (error, data) => {
+        if (error) {
+            res.status(400).json({ status: "failed", data: error })
+        } else {
+            res.status(200).json({ status: "success", data: data })
+        }
+    })
+    }
+exports.updateProfile= (req, res)=> {
+    let UserName = req.headers['username'];
+    let reqBody = req.body;
+    res.status(200).json(reqBody);
+
+    profileModel.updateOne({ UserName: UserName }, { $set: reqBody }, {upsert:true}, (error, data) => {
+        if (error) {
+            res.status(400).json({ status: "failed", data: error })
+        } else {
+            res.status(200).json({ status: "success", data: data })
+        } 
+    })
+
+    }
+
+
